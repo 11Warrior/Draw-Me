@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {
-    "@repo/typescript-config": "workspace:*"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -b",
@@ -16,7 +13,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@repo/backend-common": "workspace:*",
+    "@repo/global-package": "workspace:*"
+  },
+  "dependencies": {
     "express": "^5.2.1"
   }
 }

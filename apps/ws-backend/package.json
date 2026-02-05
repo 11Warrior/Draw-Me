@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "@repo/typescript-config": "workspace:*",
     "ws": "^8.19.0"
   },
   "scripts": {
@@ -17,6 +16,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/ws": "^8.18.1"
+    "@types/ws": "^8.18.1",
+    "@repo/typescript-config": "workspace:*",
+    "@repo/backend-common": "workspace:*"
   }
 }
