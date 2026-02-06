@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
-interface AuthRequest extends Request{
+export interface AuthRequest extends Request{
     userId: string
 }
 
-export const protectRoute = (req: AuthRequest, res: Response, next: NextFunction) => {
-    const token = req.headers['Authorization'] || " ";
+export const protectRoute = (req: AuthRequest, res: Response, next: NextFunction)  => {
+    const token = req.headers['authorization'] || " ";
 
     if (!token) return res.status(401).json({ message: "Token Absent" })
 

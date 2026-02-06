@@ -6,6 +6,7 @@ export const signUp = (req: Request, res: Response) => {
     console.log("Sign up");
 
     const valid = signupSchema.safeParse(req.body);
+    
     if (valid.success) {
         console.log("Valid Format", valid.data);
     } else {

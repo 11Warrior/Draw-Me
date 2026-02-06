@@ -6,10 +6,48 @@ generator client {
     provider = "prisma-client-js"
 }
 
+//many to one relationship from many users to possibly one room may happen
 model User {
-    id String @id @default(cuid())
-    
-    roomId String
+    userId   String @id @default(cuid())
+    userName String
+    email    String @unique
+    password String
+    image    String
 
+    rooms    Room[]
+    messages Message[]
 
+    @@map("user")
+}
+
+model Room {
+    roomId      Int    @id @default(autoincrement())
+    slug        String @unique
+    chatMessage String
+
+    createdAt DateTime @default(now())
+
+    roomAdminUser String
+
+    admin User @relation(fields: [roomAdminUser], references: [userId])
+
+    messages Message[]
+
+    @@map("room")
+}
+
+model Message {
+    messageId Int    @id @default(autoincrement())
+    message   String
+    roomId    Int
+    userId    String
+
+    createdAt DateTime @default(now())
+
+    room Room @relation(fields: [roomId], references: [roomId], onDelete: Cascade)
+    user User @relation(fields: [userId], references: [userId])
+
+    @@map("messages")
+    @@index([roomId])
+    @@index([userId])
 }
