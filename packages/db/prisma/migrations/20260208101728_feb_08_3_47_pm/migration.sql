@@ -4,7 +4,7 @@ CREATE TABLE "user" (
     "userName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "image" TEXT NOT NULL,
+    "image" TEXT,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("userId")
 );
@@ -32,7 +32,7 @@ CREATE TABLE "messages" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
+CREATE UNIQUE INDEX "user_userName_key" ON "user"("userName");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "room_slug_key" ON "room"("slug");
@@ -50,4 +50,4 @@ ALTER TABLE "room" ADD CONSTRAINT "room_roomAdminUser_fkey" FOREIGN KEY ("roomAd
 ALTER TABLE "messages" ADD CONSTRAINT "messages_roomId_fkey" FOREIGN KEY ("roomId") REFERENCES "room"("roomId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "messages" ADD CONSTRAINT "messages_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "messages" ADD CONSTRAINT "messages_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;

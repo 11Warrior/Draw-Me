@@ -1,6 +1,7 @@
-import { config } from "dotenv";
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv'
 
-config();
-
-console.log("At global backend package", process.env.JWT_SECRET!);
-export const JWT_SECRET = process.env.JWT_SECRET!; 
+export const dependencies = {
+    jwt: jwt,
+    dotenv
+}; 

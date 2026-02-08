@@ -1,23 +1,22 @@
 import { NextFunction, Request, Response } from "express";
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import { dependencies } from "@repo/backend-common/backend-common";
+import { JwtPayload } from "jsonwebtoken";
+const { jwt } = dependencies;
 
-export interface AuthRequest extends Request{
-    userId: string
-}
 
-export const protectRoute = (req: AuthRequest, res: Response, next: NextFunction)  => {
-    const token = req.headers['authorization'] || " ";
-
-    if (!token) return res.status(401).json({ message: "Token Absent" })
-
+export const protectRoute = (req: Request, res: Response, next: NextFunction) => {
     try {
-        const decoded = jwt.verify(token as string, process.env.JWT_SECRET!) as JwtPayload;
-        req.userId = decoded.userId;
-        
-        next();
+        const token = req.headers['authorization'] || " ";
+        if (!token) return res.status(401).json({ message: "Token Absent" })
 
+
+        const decoded = jwt.verify(token!, process.env.JWT_SECRET!) as JwtPayload;
+    
+
+        req.userId = decoded.id;
+
+        next();
     } catch (error) {
         return res.status(401).json({ message: "Failed to decode the token..." })
     }
-
 }

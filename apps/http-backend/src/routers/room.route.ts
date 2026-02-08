@@ -6,5 +6,4 @@ const roomRoute : Router = Router();
 
 roomRoute.post('/create-room', protectRoute , createRoom);
 
-
 export { roomRoute };

@@ -8,11 +8,11 @@ generator client {
 
 //many to one relationship from many users to possibly one room may happen
 model User {
-    userId   String @id @default(cuid())
-    userName String
-    email    String @unique
+    userId   String  @id @default(cuid())
+    userName String  @unique
+    email    String  
     password String
-    image    String
+    image    String?
 
     rooms    Room[]
     messages Message[]
@@ -23,7 +23,7 @@ model User {
 model Room {
     roomId      Int    @id @default(autoincrement())
     slug        String @unique
-    chatMessage String
+    chatMessage String?
 
     createdAt DateTime @default(now())
 
@@ -47,7 +47,7 @@ model Message {
     room Room @relation(fields: [roomId], references: [roomId], onDelete: Cascade)
     user User @relation(fields: [userId], references: [userId])
 
-    @@map("messages")
     @@index([roomId])
     @@index([userId])
+    @@map("messages")
 }
