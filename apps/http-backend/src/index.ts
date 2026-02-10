@@ -9,7 +9,6 @@ import { authRoute } from './routers/auth.route';
 import { prisma } from '@repo/db/client';
 import { roomRoute } from './routers/room.route';
 
-
 const app = express();
 
 const PORT = 3000;

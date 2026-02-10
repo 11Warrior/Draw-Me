@@ -16,8 +16,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/ws": "^8.18.1",
+    "@repo/backend-common": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@repo/backend-common": "workspace:*"
+    "@types/ws": "^8.18.1"
   }
 }
