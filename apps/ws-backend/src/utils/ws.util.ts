@@ -3,16 +3,12 @@ import path from 'path'
 
 import { dependencies } from '@repo/backend-common/backend-common'
 import { WebSocket } from 'ws';
+import { verifiedUser } from '../types/ws-backend.types';
 
 const { dotenv, jwt } = dependencies
 dotenv.config({ path: path.resolve(process.cwd(), '../../.env') })
 
 const JWT_SECRET = process.env.JWT_SECRET!;
-
-interface verifiedUser {
-    status: boolean,
-    userId: string
-}
 
 export function verifyUser(url: string, ws: WebSocket): verifiedUser {
     const token = new URLSearchParams(url?.split('?')[1]).get('token');
@@ -41,7 +37,6 @@ export function verifyUser(url: string, ws: WebSocket): verifiedUser {
             userId: " "
         };
     }
-
     return {
         status: true,
         userId: decoded.id
