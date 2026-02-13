@@ -5,7 +5,7 @@ import { DBMessageType } from '../types/ws-backend.types';
 import { WsPrisma } from '../websocket/server';
 
 //db write operation will happen here
-const Worker = async () => {
+export const Worker = async () => {
 
     const connection = await amqp.connect('amqp://localhost');
     const channelContext = await connection.createChannel();
@@ -48,4 +48,4 @@ const Worker = async () => {
     })
 }
 
-Worker();
+// Worker();

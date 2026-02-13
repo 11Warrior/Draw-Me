@@ -4,6 +4,7 @@ import { verifyUser } from '../utils/ws.util';
 import { roomHandler } from './handler';
 import { connectQueue } from '../queue/connection';
 import { prisma } from '@repo/db/client';
+import { Worker } from '../workers/consumer-worker';
 
 export const WsPrisma = prisma;
 const ws_server = new WebSocketServer({ port: 8080 });
@@ -34,7 +35,7 @@ ws_server.on('connection', async (ws, request) => {
     ws.send("Web Socket server active...");
 
 }).on('listening', async () => {
-
     await connectQueue();
+    await Worker();
 })
 
