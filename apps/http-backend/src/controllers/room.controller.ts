@@ -19,7 +19,7 @@ export const createRoom = async (req: Request, res: Response) => {
         })
 
         if (roomExists) {
-            return res.status(401).json({message: "Please enter new room name.."})
+            return res.status(401).json({ message: "Please enter new room name.." })
         }
 
         const newRoom = await prisma.room.create({
@@ -34,5 +34,44 @@ export const createRoom = async (req: Request, res: Response) => {
 
     } catch (error) {
         return res.status(500).json({ message: "Server Error while creating the room..", error })
+    }
+}
+
+export const getMessages = async (req: Request, res: Response) => {
+    try {
+        const { userId, roomId } = req.body;
+
+        const messages = await prisma.user.findUnique({
+            where: {
+                userId,
+            },
+            include: {
+                rooms:
+                {
+                    where: {
+                        roomId
+                    },
+                    select: {
+                        messages: {
+                            orderBy: {
+                                createdAt: "desc"
+                            },
+                            take: 50
+                        }
+                    }
+                }
+            }
+        })
+
+        if (!messages) {
+            return res.status(401).json({ message: "User is not in the room / No room / User has not sent any messages " })
+        }
+
+        return res.status(200).json({
+            "recent 50 messages": messages
+        })
+
+    } catch (error) {
+        return res.status(500).json({ message: "Server Error while gettting the messages..", error })
     }
 }

@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { createRoom } from "../controllers/room.controller";
+import { createRoom, getMessages } from "../controllers/room.controller";
 import { protectRoute } from "../middlewares/auth.middleware";
 
-const roomRoute : Router = Router();
+const roomRoute: Router = Router();
 
-roomRoute.post('/create-room', protectRoute , createRoom);
+roomRoute.post('/create-room', protectRoute, createRoom);
+roomRoute.get('/messages', getMessages)
+
 
 export { roomRoute };
