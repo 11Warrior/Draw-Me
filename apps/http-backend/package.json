@@ -13,14 +13,18 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@repo/backend-common": "workspace:*",
+    "@repo/global-package": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/express": "^5.0.6",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@repo/backend-common": "workspace:*",
-    "@repo/global-package": "workspace:*"
+    "@types/jsonwebtoken": "^9.0.10"
   },
   "dependencies": {
     "@repo/db": "workspace:*",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
     "express": "^5.2.1"
   }
 }

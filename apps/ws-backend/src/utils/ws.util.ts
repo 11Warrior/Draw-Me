@@ -16,11 +16,9 @@ export function verifyUser(url: string, ws: WebSocket): verifiedUser {
 
     try {
         decoded = jwt.verify(token as string, JWT_SECRET);
-
     } catch (error) {
         console.log("Error while verifying the token", error);
     }
-
 
     if (typeof (decoded) === 'string') {
         ws.close();

@@ -1,4 +1,6 @@
 import { dependencies } from '@repo/backend-common/backend-common'
+// import cookieParser from 'cookie-parser'
+import cors from 'cors'
 import path from 'path'
 const { dotenv } = dependencies;
 
@@ -14,6 +16,11 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+// app.use(cookieParser())
+app.use(cors({
+    origin: 'http://localhost:3001',
+    credentials: true
+}))
 
 app.use('/auth', authRoute);
 app.use('/room', roomRoute);
@@ -23,6 +30,6 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 app.listen(PORT, async () => {
-    console.log("Server live at", PORT);
     await prisma.$connect();
+    console.log("Server live at", PORT);
 })

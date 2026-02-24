@@ -1,6 +1,4 @@
-import { prisma } from '@repo/db/client';
 import amqp from 'amqplib'
-import { getChannelContext } from '../queue/connection';
 import { DBMessageType } from '../types/ws-backend.types';
 import { WsPrisma } from '../websocket/server';
 
@@ -11,7 +9,8 @@ export const Worker = async () => {
     const channelContext = await connection.createChannel();
 
     channelContext.assertQueue('message-write-persist', {
-        durable: true
+        durable: true,
+        messageTtl: 4 * 1000 * 60 * 60 * 24,
     })
 
     // const channelContext = getChannelContext();
@@ -46,6 +45,8 @@ export const Worker = async () => {
             // channelContext.nack(data);
         }
     })
+
+    channelContext.purgeQueue('message-write-persist')
 }
 
 // Worker();

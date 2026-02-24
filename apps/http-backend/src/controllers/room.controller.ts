@@ -75,3 +75,34 @@ export const getMessages = async (req: Request, res: Response) => {
         return res.status(500).json({ message: "Server Error while gettting the messages..", error })
     }
 }
+
+export const getRoomId = async (req: Request, res: Response) => {
+    try {
+        const { userId } = req;
+
+        //should check if this user has joined this room before this call
+        const { slug } = req.query;
+
+        const userInRoom = await prisma.user.findUnique({
+            where: {
+                userId
+            }
+        })
+
+        if (!userInRoom) return res.status(400).json({ message: "User does not exist.." })
+
+        const room = await prisma.room.findUnique({
+            where: {
+                slug : slug?.toString(),
+            },
+        })
+
+        if (!room) return res.status(400).json({ message: "Room not found.." })
+
+        return res.json({ roomId: room?.roomId })
+
+    } catch (error) {
+        console.log("Errot in getRoomId", error)
+        return res.status(500).json({ message: "Server Error while gettting the roomid..", error })
+    }
+}

@@ -6,10 +6,10 @@ export const connectQueue = async () => {
     const connection = await amqp.connect('amqp://localhost');
     channelContext = await connection.createChannel();
 
-    await channelContext.assertQueue('message-write-persist',
-        {
-            durable: true
-        })
+    channelContext.assertQueue('message-write-persist', {
+        durable: true,
+        messageTtl : 4 * 1000 * 60 * 60 * 24,
+    })
 
     console.log("Rabbit MQ connected.");
 }

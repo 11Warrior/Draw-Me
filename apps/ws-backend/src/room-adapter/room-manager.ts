@@ -32,6 +32,8 @@ class RoomManager {
         if (rooms === undefined) return;
 
         rooms.add(roomId)
+
+        // console.log("JOINED ROOM:", roomId);
     }
 
     leave(ws: WebSocket, roomId: number) {
@@ -52,6 +54,7 @@ class RoomManager {
         const users = this.users.get(roomId);
         // const rooms = this.rooms.get(ws);
         if (!users) return;
+        // console.log("Sending message...");
 
         for (const user of users) {
             user.send(JSON.stringify({
@@ -63,7 +66,6 @@ class RoomManager {
         // console.log("UserID in roommanager", userId)
 
         //add message to db via queue pipeline
-
         enqueue({
             roomId,
             userId,

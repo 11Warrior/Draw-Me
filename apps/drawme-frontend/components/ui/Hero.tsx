@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion";
-import heroSketch from "../public/assets/heroImage.png";
+import heroSketch from '../../public/assets/heroImage.png'
 import Image from "next/image";
 
 const Hero = () => {

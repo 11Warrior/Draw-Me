@@ -6,8 +6,6 @@ const { jwt } = dependencies
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
-
-
 export const signUp = async (req: Request, res: Response) => {
     // console.log("Sign up");
     try {
@@ -36,9 +34,8 @@ export const signUp = async (req: Request, res: Response) => {
             },
         })
 
-        const token = jwt.sign({ id: user.userId, userName: user.userName }, JWT_SECRET, { expiresIn: '2d' })
 
-        return res.status(200).json({ message: `User Signed Up: ${user.userId}`, token: { token } })
+        return res.status(200).json({ message: `User Signed Up: ${user.userId}` })
     } catch (error) {
         return res.status(500).json({ error: error })
     }
@@ -70,9 +67,17 @@ export const signIn = async (req: Request, res: Response) => {
 
         }, JWT_SECRET, { expiresIn: '2d' })
 
-        return res.status(200).json({ message: "User Signed in", token })
+        //TODO : storing in cookies
+        // res.cookie('signin-token', token, {
+        //     httpOnly: true,
+        //     secure: true,
+        //     maxAge: 24 * 60 * 60 * 1000,
+        // })
+
+        return res.status(200).json({ message: "User Signed in", token: token, user: userExists })
 
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ message: "server error while signing in" })
     }
 }

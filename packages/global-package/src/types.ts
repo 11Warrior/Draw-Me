@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { process } from "zod/v4/core"
 
 export const signupSchema = z.object({
     username: z.string().min(6).max(20),
