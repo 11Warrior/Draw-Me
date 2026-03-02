@@ -113,16 +113,16 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
                 ctx.lineWidth = 1;
 
                 savedDrawings.forEach((state: CanvasStateType) => {
-                    if (tool === 'Rectangle') {
+                    if (state.type === 'Rectangle') {
                         ctx.strokeRect(state.startX as number, state.startY as number, state.width as number, state.height as number);
                     }
-                    else if (tool === 'Line') {
+                    else if (state.type === 'Line') {
                         ctx.beginPath();
                         ctx.moveTo(state.startX as number, state.startY as number);
                         ctx.lineTo(state.endX as number, state.endY as number);
                         ctx.stroke();
                     }
-                    else if (tool === 'Circle') {
+                    else if (state.type === 'Circle') {
                         ctx.beginPath();
                         const radius = Math.sqrt(Math.pow(Number(state.endX) - Number(state.startX), 2) + Math.pow(Number(state.endY) - Number(state.startY), 2)) //radius pythagoras theorem
                         ctx.arc(Number(state.startX), Number(state.startY), radius, 0, 2 * Math.PI);
@@ -162,7 +162,7 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
             const handleMouseUp = (dets: MouseEvent) => {
                 const last = lastDim.current;
 
-                const data = { startX, startY, width: last.lastWidth, height: last.lastHeight, endX: dets.offsetX, endY: dets.offsetY }
+                const data = { type: tool, startX, startY, width: last.lastWidth, height: last.lastHeight, endX: dets.offsetX, endY: dets.offsetY }
                 canvasState.current.push(data);
 
                 localStorage.setItem('canvas-state', JSON.stringify(canvasState.current))
@@ -200,10 +200,8 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
                         lastWidth: width,
                         lastHeight: height
                     }
-
                     // ctx.clearRect(0, 0, rect.width, rect.height);
                     redrawFunc.current();
-
                     if (tool === 'Rectangle') {
                         ctx.strokeRect(startX, startY, width, height);
                     }
