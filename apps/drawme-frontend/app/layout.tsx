@@ -8,7 +8,6 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-
 const cursiveFont = Caveat({
   variable: "--font-caveat",
   subsets: ["latin"]

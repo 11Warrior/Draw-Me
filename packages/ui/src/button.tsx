@@ -1,20 +1,39 @@
 "use client";
 
-import { ReactNode } from "react";
+import { JSX, ReactNode } from "react";
+
+
+type Variant = 'primary' | 'secondary' | 'ghost'
 
 interface ButtonProps {
   children: ReactNode;
-  className?: string;
-  appName: string;
+  variant: Variant,
+  height?: string,
+  width?: string,
+  onClick?: (args?: any) => void
 }
 
-export const Button = ({ children, className, appName }: ButtonProps) => {
+const property = {
+  'primary': 'bg-blue-400 px-8 py-1 cursor-pointer rounded-lg font-medium',
+  'secondary': 'bg-white/70 backdrop-blur-md  px-3 py-1 cursor-pointer  rounded-lg',
+  'ghost': '',
+}
+
+export const Button = ({ children, variant, height, width, onClick }: ButtonProps): JSX.Element => {
+  function getProperty(variant: Variant): string {
+    return property[variant]
+  }
+
   return (
     <button
-      className={className}
-      onClick={() => alert(`Hello from your ${appName} app!`)}
+      className={getProperty(variant)}
+      style={{
+        height: height ? `${height}px` : undefined,
+        width: width ? `${width}px` : undefined,
+      }}
+      onClick={onClick}
     >
       {children}
     </button>
   );
-};
+};   

@@ -47,7 +47,6 @@ class RoomManager {
         users?.delete(ws);
 
         this.rooms.get(ws)?.delete(roomId)
-
     }
 
     message(userId: string, roomId: number, message: string) {

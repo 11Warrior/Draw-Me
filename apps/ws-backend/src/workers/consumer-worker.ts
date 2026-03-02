@@ -38,11 +38,10 @@ export const Worker = async () => {
             })
 
             console.log('Message added to the db');
-
-            // channelContext.ack(data, false)
+            channelContext.ack(data)
         } catch (error) {
             console.log("DB Error", error);
-            // channelContext.nack(data);
+            channelContext.nack(data);
         }
     })
 

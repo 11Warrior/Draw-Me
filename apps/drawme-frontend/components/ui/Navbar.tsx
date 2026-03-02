@@ -16,12 +16,7 @@ const Navbar = () => {
                     <a href="#" className="text-lg text-muted-foreground transition-colors hover:text-foreground">Features</a>
                     <a href="#" className="text-lg text-muted-foreground transition-colors hover:text-foreground">Docs</a>
                     <a href="#" className="text-lg text-muted-foreground transition-colors hover:text-foreground">GitHub</a>
-                    <a
-                        href="#"
-                        className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                        Start drawing
-                    </a>
+                    <a href="#" className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02] active:scale-[0.98]">Start drawing</a>
                 </div>
 
                 <button
