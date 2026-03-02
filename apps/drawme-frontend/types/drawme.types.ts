@@ -1,6 +1,6 @@
 export interface CanvasStateType {
-    type?: string,
-    ctx?: HTMLCanvasElement,
+    type: string,
+    ctx: CanvasRenderingContext2D,
     startX?: number,
     startY?: number,
     width?: number,

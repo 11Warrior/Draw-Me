@@ -6,7 +6,7 @@ import {  useState } from 'react';
 
 const Draw = () => {
   const { slug } = useParams()
-  const [toolType, setToolType] = useState<string>('')
+  const [toolType, setToolType] = useState<string>('Rectangle')
 
   return (
     <div className='relative w-screen h-dvh '>

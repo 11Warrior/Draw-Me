@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { CanvasStateType } from "../types/drawme.types";
 import { useGetRoomId } from "../hooks/useGetRoomId";
 import { Action } from "../strategy/toolAction";
-import { useParams } from "next/navigation";
 
 interface DrawPropType {
     slug: string,
@@ -21,7 +20,7 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
         lastWidth: 0,
         lastHeight: 0
     });
-    const DrawShape = useRef<() => {}>(null)
+    // const DrawShape = useRef<() => {}>(null)
     const mouseDown = useRef<boolean>(false)
 
     // console.log(slug);
@@ -54,14 +53,10 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
                 setIsConnected(true);
 
                 socket.current.onmessage = (event) => {
-
-
                     let dimensions = JSON.parse(event.data);
-
                     //process the types
                     //in  message I get the dimenstions to render in this canvas so better add the canvas state 
                     // console.log("WS RECEIVED:", dimensions);
-
                     if (dimensions.type === 'message') {
                         // console.log(dimensions.message);
                         const actualDim = JSON.parse(dimensions.message)
@@ -70,7 +65,6 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
                         redrawFunc.current();
                     }
                 }
-
             }
         }
 
@@ -88,7 +82,6 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
         const canvas = canvasRef.current;
 
         if (canvas) {
-
             const ctx = canvas.getContext('2d');
 
             let startX = 0, startY = 0;
@@ -113,21 +106,22 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
                 ctx.lineWidth = 1;
 
                 savedDrawings.forEach((state: CanvasStateType) => {
-                    if (state.type === 'Rectangle') {
-                        ctx.strokeRect(state.startX as number, state.startY as number, state.width as number, state.height as number);
-                    }
-                    else if (state.type === 'Line') {
-                        ctx.beginPath();
-                        ctx.moveTo(state.startX as number, state.startY as number);
-                        ctx.lineTo(state.endX as number, state.endY as number);
-                        ctx.stroke();
-                    }
-                    else if (state.type === 'Circle') {
-                        ctx.beginPath();
-                        const radius = Math.sqrt(Math.pow(Number(state.endX) - Number(state.startX), 2) + Math.pow(Number(state.endY) - Number(state.startY), 2)) //radius pythagoras theorem
-                        ctx.arc(Number(state.startX), Number(state.startY), radius, 0, 2 * Math.PI);
-                        ctx.stroke();
-                    }
+                    Action({ type: state.type, ctx, startX: state.startX, startY: state.startY, width: state.width, height: state.height, endX: state.endX, endY: state.endY });
+                    // if (state.type === 'Rectangle') {
+                    //     ctx.strokeRect(state.startX as number, state.startY as number, state.width as number, state.height as number);
+                    // }
+                    // else if (state.type === 'Line') {
+                    //     ctx.beginPath();
+                    //     ctx.moveTo(state.startX as number, state.startY as number);
+                    //     ctx.lineTo(state.endX as number, state.endY as number);
+                    //     ctx.stroke();
+                    // }
+                    // else if (state.type === 'Circle') {
+                    //     ctx.beginPath();
+                    //     const radius = Math.sqrt(Math.pow(Number(state.endX) - Number(state.startX), 2) + Math.pow(Number(state.endY) - Number(state.startY), 2)) //radius pythagoras theorem
+                    //     ctx.arc(Number(state.startX), Number(state.startY), radius, 0, 2 * Math.PI);
+                    //     ctx.stroke();
+                    // }
                 })
             }
 
@@ -162,7 +156,7 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
             const handleMouseUp = (dets: MouseEvent) => {
                 const last = lastDim.current;
 
-                const data = { type: tool, startX, startY, width: last.lastWidth, height: last.lastHeight, endX: dets.offsetX, endY: dets.offsetY }
+                const data = { type: tool, ctx, startX, startY, width: last.lastWidth, height: last.lastHeight, endX: dets.offsetX, endY: dets.offsetY }
                 canvasState.current.push(data);
 
                 localStorage.setItem('canvas-state', JSON.stringify(canvasState.current))
@@ -202,21 +196,24 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
                     }
                     // ctx.clearRect(0, 0, rect.width, rect.height);
                     redrawFunc.current();
-                    if (tool === 'Rectangle') {
-                        ctx.strokeRect(startX, startY, width, height);
-                    }
-                    else if (tool === 'Line') {
-                        ctx.beginPath();
-                        ctx.moveTo(startX, startY);
-                        ctx.lineTo(currEndX, currEndY);
-                        ctx.stroke();
-                    }
-                    else if (tool === 'Circle') {
-                        ctx.beginPath();
-                        const radius = Math.sqrt(Math.pow(currEndX - startX, 2) + Math.pow(currEndY - startY, 2)) //radius pythagoras theorem
-                        ctx.arc(startX, startY, radius, 0, 2 * Math.PI);
-                        ctx.stroke();
-                    }
+                    Action({ type: tool, ctx, startX, startY, width, height, endX: currEndX, endY: currEndY });
+
+                    // if (tool === 'Rectangle') {
+                    //     ctx.strokeRect(startX, startY, width, height);
+                    // }
+                    // if (tool === 'Line') {
+                    //     ctx.beginPath();
+                    //     ctx.moveTo(startX, startY);
+                    //     ctx.lineTo(currEndX, currEndY);
+                    //     ctx.stroke();
+                    // }
+                    // else if (tool === 'Circle') {
+                    //     ctx.beginPath();
+                    //     const radius = Math.sqrt(Math.pow(currEndX - startX, 2) + Math.pow(currEndY - startY, 2)) //radius pythagoras theorem
+                    //     ctx.arc(startX, startY, radius, 0, 2 * Math.PI);
+                    //     ctx.stroke();
+                    // }
+
                 }
             }
 
