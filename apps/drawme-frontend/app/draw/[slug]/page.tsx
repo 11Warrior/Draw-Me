@@ -2,7 +2,7 @@
 import { useParams } from 'next/navigation';
 import DrawBoard from '../../../draw-utils/DrawBoard';
 import { Tools } from '../../../draw-utils/Tools';
-import {  useState } from 'react';
+import { useState } from 'react';
 
 const Draw = () => {
   const { slug } = useParams()

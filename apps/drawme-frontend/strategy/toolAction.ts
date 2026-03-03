@@ -37,9 +37,10 @@ const strategy: Record<string, DrawingFunction> = {
 }
 
 export function Action(args: CanvasStateType) {
-    const { ctx } = args;
+    const { ctx, type } = args;
+    if (!ctx || !type) return;
     baseCondition(ctx);
-    const Function = strategy[args?.type]
+    const Function = strategy[type]
     if (!Function) {
         console.error("Invalid tool selected...");
         return;

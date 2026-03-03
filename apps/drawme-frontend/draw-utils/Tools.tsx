@@ -1,4 +1,5 @@
-import { Button } from '@repo/ui/button'
+import { Button } from "@repo/ui/button"
+
 export const Tools = ({ setToolType }: { setToolType: (tool: string) => void }) => {
     //logic flow =>
     //ui => canvas + tool(at top) user selects tools(shapes) state saved here and sent to canvas for drawing state(tools -> canvas) context(canvas -> tools) when clear button hit clearing the context

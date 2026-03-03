@@ -67,7 +67,6 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
                 }
             }
         }
-
         actions();
 
     }, [slug])
@@ -107,21 +106,6 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
 
                 savedDrawings.forEach((state: CanvasStateType) => {
                     Action({ type: state.type, ctx, startX: state.startX, startY: state.startY, width: state.width, height: state.height, endX: state.endX, endY: state.endY });
-                    // if (state.type === 'Rectangle') {
-                    //     ctx.strokeRect(state.startX as number, state.startY as number, state.width as number, state.height as number);
-                    // }
-                    // else if (state.type === 'Line') {
-                    //     ctx.beginPath();
-                    //     ctx.moveTo(state.startX as number, state.startY as number);
-                    //     ctx.lineTo(state.endX as number, state.endY as number);
-                    //     ctx.stroke();
-                    // }
-                    // else if (state.type === 'Circle') {
-                    //     ctx.beginPath();
-                    //     const radius = Math.sqrt(Math.pow(Number(state.endX) - Number(state.startX), 2) + Math.pow(Number(state.endY) - Number(state.startY), 2)) //radius pythagoras theorem
-                    //     ctx.arc(Number(state.startX), Number(state.startY), radius, 0, 2 * Math.PI);
-                    //     ctx.stroke();
-                    // }
                 })
             }
 
@@ -197,23 +181,6 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
                     // ctx.clearRect(0, 0, rect.width, rect.height);
                     redrawFunc.current();
                     Action({ type: tool, ctx, startX, startY, width, height, endX: currEndX, endY: currEndY });
-
-                    // if (tool === 'Rectangle') {
-                    //     ctx.strokeRect(startX, startY, width, height);
-                    // }
-                    // if (tool === 'Line') {
-                    //     ctx.beginPath();
-                    //     ctx.moveTo(startX, startY);
-                    //     ctx.lineTo(currEndX, currEndY);
-                    //     ctx.stroke();
-                    // }
-                    // else if (tool === 'Circle') {
-                    //     ctx.beginPath();
-                    //     const radius = Math.sqrt(Math.pow(currEndX - startX, 2) + Math.pow(currEndY - startY, 2)) //radius pythagoras theorem
-                    //     ctx.arc(startX, startY, radius, 0, 2 * Math.PI);
-                    //     ctx.stroke();
-                    // }
-
                 }
             }
 
@@ -246,5 +213,4 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
             }
         </>
     );
-
 }

@@ -1,7 +1,5 @@
 "use client";
-
 import { JSX, ReactNode } from "react";
-
 
 type Variant = 'primary' | 'secondary' | 'ghost'
 
@@ -10,23 +8,27 @@ interface ButtonProps {
   variant: Variant,
   height?: string,
   width?: string,
-  onClick?: (args?: any) => void
+  onClick?: (args?: any) => any
 }
 
 const property = {
-  'primary': 'bg-blue-400 px-8 py-1 cursor-pointer rounded-lg font-medium',
+  'primary': 'bg-blue-400 px-8 py-1 cursor-pointer rounded-lg font-medium text-black',
   'secondary': 'bg-white/70 backdrop-blur-md  px-3 py-1 cursor-pointer  rounded-lg',
   'ghost': '',
 }
 
+function getProperty(variant: Variant): string {
+  return property[variant]
+}
+
 export const Button = ({ children, variant, height, width, onClick }: ButtonProps): JSX.Element => {
-  function getProperty(variant: Variant): string {
-    return property[variant]
-  }
+
+  const property = getProperty(variant as Variant);
+  console.log(property);
 
   return (
     <button
-      className={getProperty(variant)}
+      className={property}
       style={{
         height: height ? `${height}px` : undefined,
         width: width ? `${width}px` : undefined,
