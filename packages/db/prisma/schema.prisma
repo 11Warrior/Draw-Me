@@ -1,53 +1,45 @@
-datasource db {
-    provider = "postgresql"
-}
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
-//many to one relationship from many users to possibly one room may happen
+datasource db {
+  provider = "postgresql"
+}
+
 model User {
-    userId   String  @id @default(cuid())
-    userName String  @unique
-    email    String  
-    password String
-    image    String?
+  userId   String    @id @default(cuid())
+  userName String    @unique
+  email    String
+  password String
+  image    String?
+  messages Message[]
+  rooms    Room[]
 
-    rooms    Room[]
-    messages Message[]
-
-    @@map("user")
+  @@map("user")
 }
 
 model Room {
-    roomId      Int    @id @default(autoincrement())
-    slug        String @unique
-    chatMessage String?
+  roomId        Int       @id @default(autoincrement())
+  slug          String    @unique
+  chatMessage   String?
+  createdAt     DateTime  @default(now())
+  roomAdminUser String
+  messages      Message[]
+  admin         User      @relation(fields: [roomAdminUser], references: [userId])
 
-    createdAt DateTime @default(now())
-
-    roomAdminUser String
-
-    admin User @relation(fields: [roomAdminUser], references: [userId])
-
-    messages Message[]
-
-    @@map("room")
+  @@map("room")
 }
 
 model Message {
-    messageId Int    @id @default(autoincrement())
-    message   String
-    roomId    Int
-    userId    String
+  messageId Int      @id @default(autoincrement())
+  message   String
+  roomId    Int
+  userId    String
+  createdAt DateTime @default(now())
+  room      Room     @relation(fields: [roomId], references: [roomId], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [userId])
 
-    createdAt DateTime @default(now())
-
-    room Room @relation(fields: [roomId], references: [roomId], onDelete: Cascade)
-    user User @relation(fields: [userId], references: [userId])
-
-    @@index([roomId])
-    @@index([userId])
-    @@map("messages")
+  @@index([roomId])
+  @@index([userId])
+  @@map("messages")
 }

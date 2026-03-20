@@ -24,7 +24,6 @@ function getProperty(variant: Variant): string {
 export const Button = ({ children, variant, height, width, onClick }: ButtonProps): JSX.Element => {
 
   const property = getProperty(variant as Variant);
-  console.log(property);
 
   return (
     <button

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { Caveat } from "next/font/google";
 import "./globals.css";
+import { UserContextProvider } from "../context/UserContext";
+import { GlobalContextProvider } from "../context/GlobalContext";
+import { RoomContextProvider } from "../context/RoomContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,11 +28,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={` ${cursiveFont.variable} ${geistSans.variable} antialiased`}>
-      <body
-        className='font-[--font-geist-sans]'
-      >
-        {children}
-      </body>
+      <GlobalContextProvider>
+        <UserContextProvider>
+          <RoomContextProvider>
+            <body
+              className='font-[--font-geist-sans]'
+            >
+              {children}
+            </body>
+          </RoomContextProvider>
+        </UserContextProvider>
+      </GlobalContextProvider>
     </html>
   );
 }

@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { CanvasStateType } from "../types/drawme.types";
-import { useGetRoomId } from "../hooks/useGetRoomId";
-import { Action } from "../strategy/toolAction";
+"use client"
+
+import { useContext, useEffect, useRef, useState } from "react";
+import { CanvasStateType } from "../../types/drawme.types";
+import { Action } from "../../strategy/toolAction";
+import { RoomContext } from "../../context/RoomContext";
 
 interface DrawPropType {
     slug: string,
@@ -11,48 +13,46 @@ interface DrawPropType {
 export default function DrawBoard({ props }: { props: DrawPropType }) {
     const { slug, tool } = props;
     const roomId = useRef<number | null>(null);
-    const socket = useRef<WebSocket | null>(null);
+    // const socket = useRef<WebSocket | null>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const canvasState = useRef<CanvasStateType[]>([]);
     const redrawFunc = useRef(() => { })
-    const [isConnected, setIsConnected] = useState<boolean>(false);
     const lastDim = useRef<{ lastWidth: number, lastHeight: number }>({
         lastWidth: 0,
         lastHeight: 0
     });
-    // const DrawShape = useRef<() => {}>(null)
     const mouseDown = useRef<boolean>(false)
 
-    // console.log(slug);
+    const roomContext = useContext(RoomContext);
+
+    if (!roomContext) return;
+
+    const { socket, getRoomId, sendMessage, isConnected } = roomContext;
+
+    if (!socket) return;
+
     useEffect(() => {
         //when slug changes new WebSocket server and new events
         if (!slug) return;
         // console.log(slug);
         async function actions() {
-            const roomID = await useGetRoomId(slug as string);
+            const roomID = await getRoomId(slug);
             // console.log(roomID);
-            if (!roomID) setIsConnected(false);
 
             roomId.current = roomID;
 
-            console.log(roomId.current);
+            // console.log(roomId.current);
 
-            const socketClient = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtbHowaDEwNDAwMDBhamlqZ2JoZ2FpNXYiLCJ1c2VyTmFtZSI6InRlc3RfMTgiLCJpYXQiOjE3NzI0NDAzOTQsImV4cCI6MTc3MjYxMzE5NH0.g57ZoJNryQU4D2dEH_Nk1VAFYqKmO0spq_Sw2_O86OM`);
+            // const socketClient = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}`);
+            // socket.current = socketClient;
 
-            socket.current = socketClient;
-
-            socket.current.onopen = () => {
+            socket.current!.onopen = () => {
                 console.log("Connected to ws..");
-                if (!socket.current) return;
 
-                socket.current.send(JSON.stringify({
-                    type: "join_room",
-                    roomId: roomId.current
-                }))
+                // joinRoom(roomID.current)
 
-                setIsConnected(true);
-
-                socket.current.onmessage = (event) => {
+                //receiving message
+                socket.current!.onmessage = (event) => {
                     let dimensions = JSON.parse(event.data);
                     //process the types
                     //in  message I get the dimenstions to render in this canvas so better add the canvas state 
@@ -145,14 +145,16 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
 
                 localStorage.setItem('canvas-state', JSON.stringify(canvasState.current))
 
-                if (!socket.current) return;
+                // if (!socket.current) return;
 
-                //we have to send message to each connected user
-                socket.current.send(JSON.stringify({
-                    type: "send_message",
-                    roomId: roomId.current,
-                    message: JSON.stringify(data)
-                }))
+                // //we have to send message to each connected user
+                // socket.current.send(JSON.stringify({
+                //     type: "send_message",
+                //     roomId: roomId.current,
+                //     message: JSON.stringify(data)
+                // }))
+
+                sendMessage(roomId.current as number, JSON.stringify(data));
 
                 redrawFunc.current();
 
@@ -191,7 +193,6 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
 
             initCanvas();
 
-
             return () => {
                 window.removeEventListener('resize', initCanvas)
                 canvas.removeEventListener('pointerdown', handleMouseDown)
@@ -205,7 +206,7 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
         <>
             <canvas ref={canvasRef} className='w-full h-full touch-none' />
             {
-                !isConnected && (
+                isConnected && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black text-white text-lg">
                         Loading...
                     </div>

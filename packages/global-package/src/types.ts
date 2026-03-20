@@ -1,5 +1,4 @@
 import { z } from "zod"
-import { process } from "zod/v4/core"
 
 export const signupSchema = z.object({
     username: z.string().min(6).max(20),
@@ -13,6 +12,6 @@ export const signinSchema = z.object({
 })
 
 export const roomSchema = z.object({
-    roomName: z.string().min(6).max(15),
+    roomName: z.string().min(6).max(30),
     roomId: z.string().optional()
 })

@@ -6,21 +6,22 @@ export const createRoom = async (req: Request, res: Response) => {
     try {
         const parsedData = roomSchema.safeParse(req.body);
         const userId = req.userId;
-
+        console.log("Inside Create room req.body: ", req.body);
+        console.log("Inside Create room userId: ", userId);
 
         if (!parsedData.success) {
             return res.status(401).json({ message: 'Error while parsing the body', error: parsedData.error })
         }
 
-        const roomExists = await prisma.room.findUnique({
-            where: {
-                slug: parsedData.data.roomName
-            }
-        })
+        // const roomExists = await prisma.room.findUnique({
+        //     where: {
+        //         slug: parsedData.data.roomName
+        //     }
+        // })
 
-        if (roomExists) {
-            return res.status(401).json({ message: "Please enter new room name.." })
-        }
+        // if (roomExists) {
+        //     return res.status(401).json({ message: "Please enter new room name.." })
+        // }
 
         const newRoom = await prisma.room.create({
             data: {
@@ -83,17 +84,19 @@ export const getRoomId = async (req: Request, res: Response) => {
         //should check if this user has joined this room before this call
         const { slug } = req.query;
 
-        const userInRoom = await prisma.user.findUnique({
+        const userInRoom = await prisma.user.findFirst({
             where: {
                 userId
             }
         })
 
+        // console.log(slug, userId);
+
         if (!userInRoom) return res.status(400).json({ message: "User does not exist.." })
 
-        const room = await prisma.room.findUnique({
+        const room = await prisma.room.findFirst({
             where: {
-                slug : slug?.toString(),
+                slug: slug?.toString()
             },
         })
 
@@ -102,7 +105,7 @@ export const getRoomId = async (req: Request, res: Response) => {
         return res.json({ roomId: room?.roomId })
 
     } catch (error) {
-        console.log("Errot in getRoomId", error)
+        console.log("Error in getRoomId", error)
         return res.status(500).json({ message: "Server Error while gettting the roomid..", error })
     }
 }

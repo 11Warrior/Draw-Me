@@ -9,21 +9,15 @@ import SidePanel from './SidePanel'
 
 
 const LandingPage = () => {
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
-
-  const togglePanelState = (state: boolean) => {
-    setIsPanelOpen(state);
-  }
-
-  console.log("In LandingPage", isPanelOpen);
+  
   return (
     <>
-      <Navbar togglePanelState={togglePanelState} />
+      <Navbar />
       <main>
-        <Hero togglePanelState={togglePanelState} />
+        <Hero />
         <Features />
         <Footer />
-        <SidePanel togglePanelState={togglePanelState} isPanelOpen={isPanelOpen} />
+        <SidePanel />
       </main>
 
     </>

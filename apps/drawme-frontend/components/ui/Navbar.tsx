@@ -1,10 +1,15 @@
 "use client"
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion } from 'framer-motion'
+import { GlobalContext } from "../../context/GlobalContext";
 
-const Navbar = ({ togglePanelState }: { togglePanelState: (state: boolean) => void }) => {
+const Navbar = () => {
     const [open, setOpen] = useState(false);
+    const context = useContext(GlobalContext);
+    if (!context) return null;
+
+    const { setPanelState } = context;
 
     return (
         <nav className="fixed top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-md">
@@ -18,7 +23,7 @@ const Navbar = ({ togglePanelState }: { togglePanelState: (state: boolean) => vo
                     <a href="#" className="text-lg text-muted-foreground transition-colors hover:text-foreground">Docs</a>
                     <a href="#" className="text-lg text-muted-foreground transition-colors hover:text-foreground">GitHub</a>
                     <button className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer border border-border"
-                        onClick={() => togglePanelState(true)}
+                        onClick={() => setPanelState(true)}
                     >
                         Start Drawing
                     </button>
@@ -37,19 +42,19 @@ const Navbar = ({ togglePanelState }: { togglePanelState: (state: boolean) => vo
 
             {open && (
                 <motion.div className="flex flex-col gap-3 border-t border-border bg-background/80 backdrop-blur px-6 py-4 md:hidden"
-                    initial={{ opacity: 0, y: "0%" }}
-                    animate={{ opacity: 1, y: "full" }}
+                    initial={{ opacity: 0, y: -100 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{
-                        y: { duration: 1.4 }
+                        type: "spring", damping: 28, stiffness: 300
                     }}
-                    exit={{ opacity: 0 }}
+                    exit={{ opacity: 0, y: -100 }}
                 >
                     <a href="#" className="text-sm text-muted-foreground">Features</a>
                     <a href="#" className="text-sm text-muted-foreground">Docs</a>
                     <a href="#" className="text-sm text-muted-foreground">GitHub</a>
                     <button
-                        className="mt-1 inline-block rounded-lg bg-primary px-4 py-2 text-center text-sm font-semibold text-primary-foreground border border-white cursor-pointer"
-                        onClick={() => togglePanelState(true)}
+                        className="mt-1 inline-block rounded-lg bg-primary px-4 py-2 text-center text-sm font-semibold text-primary-foreground border border-white cursor-pointer hover:text-black hover:bg-white ease duration-150"
+                        onClick={() => setPanelState(true)}
                     >
                         Start Drawing
                     </button>

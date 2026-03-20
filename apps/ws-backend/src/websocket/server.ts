@@ -11,9 +11,9 @@ const ws_server = new WebSocketServer({ port: 8080 });
 
 
 ws_server.on('connection', async (ws, request) => {
-    const url = request.url as string;
+    // const url = request.url as string;
 
-    const { userId, status } = verifyUser(url, ws);
+    const { userId, status } = verifyUser(request, ws);
 
     if (!status) {
         return;

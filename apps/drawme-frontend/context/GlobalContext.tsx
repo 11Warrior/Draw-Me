@@ -1,18 +1,17 @@
-// import React, { createContext, ReactNode, useState } from 'react'
+"use client"
+import  { createContext, ReactNode, useState } from 'react'
+import { GlobalContextType } from '../types/drawme.types';
 
 
-// export const GlobalContext = createContext(null);
+export const GlobalContext = createContext<GlobalContextType | null>(null);
 
-// export const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
+export const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
+    const [panelState, setPanelState] = useState(false);
 
-
-//     async function getRoomId() { }
-
-
-//     return (
-//         <GlobalContext.Provider value={roomId}>
-//             {children}
-//         </GlobalContext.Provider>
-//     )
-// }
+    return (
+        <GlobalContext.Provider value={{ panelState, setPanelState }}>
+            {children}
+        </GlobalContext.Provider>
+    )
+}
 

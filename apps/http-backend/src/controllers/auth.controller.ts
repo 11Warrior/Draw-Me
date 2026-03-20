@@ -7,12 +7,10 @@ const { jwt } = dependencies
 const JWT_SECRET = process.env.JWT_SECRET!;
 
 export const signUp = async (req: Request, res: Response) => {
-    // console.log("Sign up");
     try {
 
         const valid = signupSchema.safeParse(req.body);
         if (!valid.success) {
-            // console.log("Invalid Format", valid.error.toString());
             return res.status(400).json({ message: "Invalid Signup credentials received.." })
         }
 
@@ -34,7 +32,6 @@ export const signUp = async (req: Request, res: Response) => {
             },
         })
 
-
         return res.status(200).json({ message: `User Signed Up: ${user.userId}` })
     } catch (error) {
         return res.status(500).json({ error: error })
@@ -50,7 +47,6 @@ export const signIn = async (req: Request, res: Response) => {
         }
 
         const credentials = valid.data;
-
         const userExists = await prisma.user.findUnique({
             where: {
                 userName: credentials.username
@@ -68,16 +64,23 @@ export const signIn = async (req: Request, res: Response) => {
         }, JWT_SECRET, { expiresIn: '2d' })
 
         //TODO : storing in cookies
-        // res.cookie('signin-token', token, {
-        //     httpOnly: true,
-        //     secure: true,
-        //     maxAge: 24 * 60 * 60 * 1000,
-        // })
+        res.cookie('signin_token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: "lax",
+            maxAge: 24 * 60 * 60 * 1000,
+        })
 
-        return res.status(200).json({ message: "User Signed in", token: token, user: userExists })
+        return res.status(200).json({ message: "User Signed in" })
 
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "server error while signing in" })
     }
+}
+
+export const isAuthUser = async (req: Request, res: Response) => {
+    res.json({
+        user: req.userId
+    })
 }

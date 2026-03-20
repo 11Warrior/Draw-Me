@@ -1,7 +1,7 @@
 "use client"
 import { useParams } from 'next/navigation';
-import DrawBoard from '../../../draw-utils/DrawBoard';
-import { Tools } from '../../../draw-utils/Tools';
+import DrawBoard from '../../../utils/Canvas-Utils/DrawBoard';
+import { Tools } from '../../../utils/Canvas-Utils/Tools';
 import { useState } from 'react';
 
 const Draw = () => {

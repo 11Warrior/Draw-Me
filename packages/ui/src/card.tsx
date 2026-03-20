@@ -1,27 +1,28 @@
-import { type JSX } from "react";
+import { ReactNode, type JSX } from "react";
 
-export function Card({
-  className,
-  title,
-  children,
-  href,
-}: {
-  className?: string;
-  title: string;
-  children: React.ReactNode;
-  href: string;
-}): JSX.Element {
+const defaultClass = 'w-[420px] h-[460px] rounded-lg p-4 bg-blue-500/25 border border-black'
+
+interface CardProps {
+  // variant: Variant,
+  className?: string,
+  children?: ReactNode,
+  height?: string,
+  width?: string,
+  onClick?: (args?: any) => any
+}
+
+export function Card({ className, children, width, height, onClick }: CardProps): JSX.Element {
+
   return (
-    <a
-      className={className}
-      href={`${href}?utm_source=create-turbo&utm_medium=basic&utm_campaign=create-turbo"`}
-      rel="noopener noreferrer"
-      target="_blank"
+    <div
+      className={(className === undefined) || null ? defaultClass : className + ' rounded-lg p-4 overflow-hidden'}
+      style={{
+        width: width + 'px',
+        height: height + 'px'
+      }}
+      onClick={onClick}
     >
-      <h2>
-        {title} <span>-&gt;</span>
-      </h2>
-      <p>{children}</p>
-    </a>
+      {children}
+    </div>
   );
 }

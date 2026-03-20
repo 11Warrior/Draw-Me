@@ -2,10 +2,27 @@
 import { motion } from "framer-motion";
 import heroSketch from '../../public/assets/heroImage.png'
 import Image from "next/image";
-import { useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { GlobalContext } from "../../context/GlobalContext";
+import { useRouter } from "next/navigation";
+import LoadingUI from "./LoadingUI";
+import { UserContext } from "../../context/UserContext";
 
-const Hero = ({ togglePanelState }: { togglePanelState: (state: boolean) => void }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const Hero = () => {
+  const context = useContext(GlobalContext);
+  const userContext = useContext(UserContext);
+  const navigate = useRouter();
+  if (!context || !userContext) return;
+
+  const { setPanelState } = context;
+  const { login, IsAuthUser } = userContext;
+
+  useEffect(() => {
+    IsAuthUser();
+  }, [])
+
+  // if (true) <LoadingUI />
+  // console.log(login);
 
   return (
     <section className="relative overflow-hidden px-6 pt-32 pb-20 md:pt-40 md:pb-28">
@@ -48,9 +65,10 @@ const Hero = ({ togglePanelState }: { togglePanelState: (state: boolean) => void
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <button
-
               className="inline-flex items-center gap-2 rounded-lg bg-primary cursor-pointer border border-border bg-background px-6 py-3 text-base font-semibold text-primary-foreground transition-transform hover:scale-[1.02] active:scale-[0.98]"
-              onClick={() => togglePanelState(true)}
+              onClick={() => {
+                (login) ? setPanelState(true) : navigate.push('/auth')
+              }}
             >
               Start Drawing
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
