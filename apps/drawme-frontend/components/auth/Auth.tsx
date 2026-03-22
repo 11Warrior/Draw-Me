@@ -35,7 +35,7 @@ const Auth = ({ mode, handleModeChange }: SignUpProps) => {
   const { setPanelState } = globalContext;
 
   const handleSubmit = async (e: any) => {
-    
+
     e.preventDefault();
 
     if (mode === 'login') {

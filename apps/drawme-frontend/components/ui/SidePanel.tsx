@@ -24,12 +24,12 @@ const SidePanel = () => {
     const router = useRouter();
 
     const handleEnterRoom = async () => {
+        console.log(mode);
         if (mode === 'create') {
             console.log("Creating new room", roomSlug)
 
             await createRoom(roomSlug);
         }
-        
         else if (mode === 'join') {
             const roomId = await getRoomId(roomSlug);
             console.log("Joining : ", roomId);
@@ -52,7 +52,7 @@ const SidePanel = () => {
                         exit={{ opacity: 0 }}
                         onClick={() => setPanelState(false)}
                     />
-                    
+
                     <motion.div
                         className="fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l border-border bg-background shadow-2xl"
                         initial={{ x: "100%" }}

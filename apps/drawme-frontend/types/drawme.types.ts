@@ -15,9 +15,10 @@ export interface GlobalContextType {
 }
 
 export interface RoomContextType {
-    isConnected: boolean,
+    isLoading: boolean,
+    roomId: React.RefObject<number | null>,
     socket: React.RefObject<WebSocket | null>
-    createRoom: (roomName: string) => Promise<void>
+    createRoom: (roomName: string) => void
     joinRoom: (roomId: number) => void
     sendMessage: (roomId: number, message: string) => void
     getRoomId: (slug: string) => Promise<number>

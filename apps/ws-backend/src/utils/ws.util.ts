@@ -9,7 +9,7 @@ import * as cookie from 'cookie'
 
 const { dotenv, jwt } = dependencies
 
-dotenv.config(/**{ path: path.resolve(process.cwd(), '../../.env') } */)
+dotenv.config({ path: path.resolve(process.cwd(), '../../.env') } )
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 

@@ -27,7 +27,7 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
 
     if (!roomContext) return;
 
-    const { socket, getRoomId, sendMessage, isConnected } = roomContext;
+    const { socket, getRoomId, sendMessage, isLoading } = roomContext;
 
     if (!socket) return;
 
@@ -45,12 +45,11 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
 
             // const socketClient = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}`);
             // socket.current = socketClient;
-
-            socket.current!.onopen = () => {
+            if (!socket.current)  return null;
+            
+            socket.current.onopen = () => {
                 console.log("Connected to ws..");
-
                 // joinRoom(roomID.current)
-
                 //receiving message
                 socket.current!.onmessage = (event) => {
                     let dimensions = JSON.parse(event.data);
@@ -68,7 +67,6 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
             }
         }
         actions();
-
     }, [slug])
 
     // console.log(roomId);
@@ -206,7 +204,7 @@ export default function DrawBoard({ props }: { props: DrawPropType }) {
         <>
             <canvas ref={canvasRef} className='w-full h-full touch-none' />
             {
-                isConnected && (
+                isLoading && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black text-white text-lg">
                         Loading...
                     </div>
